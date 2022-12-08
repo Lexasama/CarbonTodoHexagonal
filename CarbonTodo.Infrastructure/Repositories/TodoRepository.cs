@@ -8,7 +8,7 @@ namespace CarbonTodo.Infrastructure.Repositories
     public class TodoRepository : ITodoRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        
+
         public TodoRepository(ApplicationDbContext context)
         {
             _dbContext = context;
@@ -16,7 +16,7 @@ namespace CarbonTodo.Infrastructure.Repositories
 
         public async Task<IEnumerable<Todo>> GetAll()
         {
-            var todos = _dbContext.Todos;
+            var todos = _dbContext.Todos.OrderBy(t => t.Order);
             return ConvertToTodo(todos);
         }
 
@@ -26,12 +26,33 @@ namespace CarbonTodo.Infrastructure.Repositories
 
             return todo is null ? null : ConvertToTodo(todo);
         }
+
+        public async Task<Todo> Add(string title)
+        {
+            var order = GenerateOrder();
+            var todoData = new TodoData(0, title, false, order);
+
+            var todo = await _dbContext.Todos.AddAsync(todoData);
+            await _dbContext.SaveChangesAsync();
+
+            return ConvertToTodo(todo.Entity);
+        }
         
+        private int GenerateOrder()
+        {
+            return GetMaxOrder() + 1;
+        }
+
+        private int GetMaxOrder()
+        {
+            return _dbContext.Todos.Max(t => (int?)t.Order) ?? 0;
+        }
+
         private static Todo ConvertToTodo(TodoData todoData)
         {
             return new Todo(todoData.Id, todoData.Title, todoData.Completed, todoData.Order);
         }
-        
+
         private IEnumerable<Todo> ConvertToTodo(IEnumerable<TodoData> todoData)
         {
             return todoData.Select(t => new Todo(t.Id, t.Title, t.Completed, t.Order));
