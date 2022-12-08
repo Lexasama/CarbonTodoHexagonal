@@ -16,7 +16,7 @@ namespace CarbonTodo.Api.Controllers
             _service = todoService;
             _linkGenerator = linkGenerator;
         }
-        
+
         [HttpGet(Name = "GetAll")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<TodoViewModel>>> FindAll()
@@ -24,7 +24,7 @@ namespace CarbonTodo.Api.Controllers
             var todos = await _service.FindAll();
             return Ok(todos.Select(t => TodoViewModel.From(t, GetUrl(t.Id))));
         }
-        
+
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -34,7 +34,7 @@ namespace CarbonTodo.Api.Controllers
 
             return Ok(TodoViewModel.From(todo, GetUrl(todo.Id)));
         }
-        
+
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> Delete(bool? completed)

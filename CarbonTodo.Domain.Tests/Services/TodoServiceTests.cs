@@ -26,7 +26,7 @@ namespace CarbonTodo.Domain.Tests.Services
             _mockTodoRepository.Verify(repo => repo.GetAll(), Times.Once);
             _mockTodoRepository.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async Task FindById_should_throw_NotFoundException_given_invalid_id()
         {
@@ -52,17 +52,16 @@ namespace CarbonTodo.Domain.Tests.Services
             _mockTodoRepository.Verify(repo => repo.GetById(1), Times.Once);
             _mockTodoRepository.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async Task Delete_throws_NotFoundException_given_non_existing_id()
         {
             _mockTodoRepository.Setup(repo => repo.GetById(It.IsAny<int>()))
-                .ReturnsAsync( () => null).Verifiable();
+                .ReturnsAsync(() => null).Verifiable();
             await Assert.ThrowsAsync<NotFoundEntityAppException>(async () => await sut.Delete(1));
 
             _mockTodoRepository.Verify(repo => repo.GetById(1), Times.Once);
             _mockTodoRepository.VerifyNoOtherCalls();
-
         }
 
         [Fact]
@@ -89,7 +88,6 @@ namespace CarbonTodo.Domain.Tests.Services
 
             _mockTodoRepository.Verify(repo => repo.DeleteAll(), Times.Once);
             _mockTodoRepository.VerifyNoOtherCalls();
-
         }
 
         [Fact]
@@ -100,6 +98,5 @@ namespace CarbonTodo.Domain.Tests.Services
             _mockTodoRepository.Verify(repo => repo.DeleteCompleted(), Times.Once);
             _mockTodoRepository.VerifyNoOtherCalls();
         }
-
     }
 }

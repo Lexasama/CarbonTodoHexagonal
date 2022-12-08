@@ -8,7 +8,7 @@ namespace CarbonTodo.Infrastructure.Repositories
     public class TodoRepository : ITodoRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        
+
         public TodoRepository(ApplicationDbContext context)
         {
             _dbContext = context;
@@ -29,24 +29,29 @@ namespace CarbonTodo.Infrastructure.Repositories
 
         public async Task DeleteAll()
         {
-            throw new NotImplementedException();
+            _dbContext.Todos.RemoveRange(_dbContext.Todos);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteCompleted()
         {
-            throw new NotImplementedException();
+            var completedTodos = _dbContext.Todos.Where(todo => todo.Completed);
+            _dbContext.Todos.RemoveRange(completedTodos);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task Delete(Todo todo)
         {
-            throw new NotImplementedException();
+            var todoData = await _dbContext.Todos.FindAsync(todo.Id);
+            _dbContext.Todos.Remove(todoData);
+            await _dbContext.SaveChangesAsync();
         }
 
         private static Todo ConvertToTodo(TodoData todoData)
         {
             return new Todo(todoData.Id, todoData.Title, todoData.Completed, todoData.Order);
         }
-        
+
         private IEnumerable<Todo> ConvertToTodo(IEnumerable<TodoData> todoData)
         {
             return todoData.Select(t => new Todo(t.Id, t.Title, t.Completed, t.Order));
