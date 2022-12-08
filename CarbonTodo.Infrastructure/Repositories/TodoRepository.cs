@@ -16,7 +16,7 @@ namespace CarbonTodo.Infrastructure.Repositories
 
         public async Task<IEnumerable<Todo>> GetAll()
         {
-            var todos = _dbContext.Todos;
+            var todos = _dbContext.Todos.OrderBy(t => t.Order);
             return ConvertToTodo(todos);
         }
 
@@ -26,6 +26,28 @@ namespace CarbonTodo.Infrastructure.Repositories
 
             return todo is null ? null : ConvertToTodo(todo);
         }
+
+        public async Task<Todo> Add(string title)
+        {
+            var order = GenerateOrder();
+            var todoData = new TodoData(0, title, false, order);
+
+            var todo = await _dbContext.Todos.AddAsync(todoData);
+            await _dbContext.SaveChangesAsync();
+
+            return ConvertToTodo(todo.Entity);
+        }
+        
+        private int GenerateOrder()
+        {
+            return GetMaxOrder() + 1;
+        }
+
+        private int GetMaxOrder()
+        {
+            return _dbContext.Todos.Max(t => (int?)t.Order) ?? 0;
+        }
+
 
         public async Task DeleteAll()
         {

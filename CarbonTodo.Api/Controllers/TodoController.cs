@@ -34,6 +34,19 @@ namespace CarbonTodo.Api.Controllers
 
             return Ok(TodoViewModel.From(todo, GetUrl(todo.Id)));
         }
+        
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<IActionResult> Create([FromBody] CreateDto dto)
+        {
+            
+            var todo = await _service.Create(dto.Title);
+
+            string url = GetUrl(todo.Id);
+
+            TodoViewModel result = TodoViewModel.From(todo, url);
+            return Created(result.Url, result);
+        }
 
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

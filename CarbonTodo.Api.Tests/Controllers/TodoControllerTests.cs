@@ -56,6 +56,32 @@ namespace CarbonTodo.Api.Tests.Controllers
             using var response = await client.GetAsync("/todos/1");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+        
+        [Fact]
+        public async Task Return_201Created_When_creating_a_todo()
+        {
+            const string title = nameof(Return_201Created_When_creating_a_todo);
+            var todoContent = JsonContent.Create(new { Title = title });
+
+            using var response = await _client.PostAsync("/todos", todoContent);
+            var todo = await response.Content.ReadFromJsonAsync<TodoViewModel>();
+
+            Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+            Assert.Equal(new TodoViewModel(1, title, false, 1, "http://localhost/todos/1")
+                , todo);
+        }
+        
+        [Fact]
+        public async Task Return_400BadRequest_when_create_given_invalid_model()
+        {
+            const string title = "";
+            var todoContent = JsonContent.Create(new { Title = title });
+
+            using var response = await _client.PostAsync("/todos", todoContent);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+        
 
         [Fact]
         public async Task Return_204NoContent_when_delete_completed()

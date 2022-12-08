@@ -1,4 +1,5 @@
 using CarbonTodo.Api.ActionFilters;
+using CarbonTodo.Api.Validation;
 using CarbonTodo.Domain.Repositories;
 using CarbonTodo.Domain.Services;
 using CarbonTodo.Infrastructure.Context;
@@ -12,6 +13,7 @@ builder.Services.AddTransient<ITodoRepository, TodoRepository>();
 builder.Services.AddTransient<ITodoService, TodoService>();
 builder.Services.AddControllers(options =>
     options.Filters.Add<AppExceptionFilter>());
+builder.Services.AddValidators();
 
 var app = builder.Build();
 
