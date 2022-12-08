@@ -52,5 +52,58 @@ namespace CarbonTodo.Domain.Tests.Services
             _mockTodoRepository.Verify(repo => repo.GetById(1), Times.Once);
             _mockTodoRepository.VerifyNoOtherCalls();
         }
+        
+        [Fact]
+        public async Task Update_can_update_todo()
+        {
+            const string title = nameof(Update_can_update_todo);
+            var expectedTodo = new Todo(1, title, false, 1);
+
+            _mockTodoRepository.Setup(repo => repo.GetById(It.IsAny<int>()))
+                .ReturnsAsync(expectedTodo).Verifiable();
+            _mockTodoRepository.Setup(repo => repo.GetByOrder(It.IsAny<int>()))
+                .ReturnsAsync(expectedTodo).Verifiable();
+            const string newTitle = "new title";
+            await sut.Update(expectedTodo.Id, true, newTitle, expectedTodo.Order);
+
+            _mockTodoRepository.Verify(repo => repo.Update(expectedTodo.Id, newTitle, true, expectedTodo.Order), Times.Once);
+            _mockTodoRepository.Verify(repo => repo.GetById(expectedTodo.Id));
+            _mockTodoRepository.Verify(repo => repo.GetByOrder(expectedTodo.Order));
+            _mockTodoRepository.VerifyNoOtherCalls();
+
+        }
+        
+        [Fact]
+        public async Task Update_should_throw_NotFoundAppException_given_non_existing_Id()
+        {
+            const string title = nameof(Update_should_throw_NotFoundAppException_given_non_existing_Id);
+            var expectedTodo = new Todo(1, title, false, 1);
+
+            _mockTodoRepository.Setup(repo => repo.GetById(It.IsAny<int>()))
+                .ReturnsAsync(() => null).Verifiable();
+
+            await Assert.ThrowsAsync<NotFoundEntityAppException>(async () =>
+                await sut.Update(expectedTodo.Id, true, "new title", expectedTodo.Order));
+            _mockTodoRepository.Verify(repo => repo.GetById(expectedTodo.Id));
+            _mockTodoRepository.VerifyNoOtherCalls();
+
+        }
+        
+        [Fact]
+        public async Task Update_should_throw_ConflictingOrderAppException_given_existing_order()
+        {
+            const string title = nameof(Update_should_throw_ConflictingOrderAppException_given_existing_order);
+            var expectedTodo = new Todo(1, title, false, 1);
+            _mockTodoRepository.Setup(repo => repo.GetById(expectedTodo.Id))
+                .ReturnsAsync(expectedTodo).Verifiable();
+            _mockTodoRepository.Setup(repo => repo.GetByOrder(It.IsAny<int>()))
+                .ReturnsAsync(new Todo(2, "todo", false, expectedTodo.Order)).Verifiable();
+
+            await Assert.ThrowsAsync<ConflictingOrderAppException>(async () =>
+                await sut.Update(expectedTodo.Id, true, "new title", 2));
+            _mockTodoRepository.Verify(repo => repo.GetById(expectedTodo.Id), Times.Once);
+            _mockTodoRepository.Verify(repo => repo.GetByOrder(It.IsAny<int>()), Times.Once);
+            _mockTodoRepository.VerifyNoOtherCalls();
+        }
     }
 }

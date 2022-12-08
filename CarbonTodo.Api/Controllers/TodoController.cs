@@ -34,6 +34,17 @@ namespace CarbonTodo.Api.Controllers
 
             return Ok(TodoViewModel.From(todo, GetUrl(todo.Id)));
         }
+        
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateDto dto)
+        {
+            var todo = await _service.Update(id, dto.Completed, dto.Title, dto.Order);
+
+            return Ok(TodoViewModel.From(todo, GetUrl(id)));
+        }
 
         private string GetUrl(int id)
         {

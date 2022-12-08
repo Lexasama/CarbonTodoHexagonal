@@ -26,7 +26,17 @@ namespace CarbonTodo.Infrastructure.Repositories
 
             return todo is null ? null : ConvertToTodo(todo);
         }
-        
+
+        public Task<Todo> Update(int id, string title, bool completed, int order)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Todo?> GetByOrder(int order)
+        {
+            throw new NotImplementedException();
+        }
+
         private static Todo ConvertToTodo(TodoData todoData)
         {
             return new Todo(todoData.Id, todoData.Title, todoData.Completed, todoData.Order);

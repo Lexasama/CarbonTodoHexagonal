@@ -6,5 +6,6 @@ namespace CarbonTodo.Domain.Services
     {
         Task<List<Todo>> FindAll();
         Task<Todo> FindById(int id);
+        Task<Todo> Update(int id, bool completed, string title, int order);
     }
 }
