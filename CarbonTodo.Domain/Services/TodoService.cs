@@ -30,9 +30,9 @@ namespace CarbonTodo.Domain.Services
             return todo;
         }
 
-        public Task<Todo> Create(string title)
+        public async Task<Todo> Create(string title)
         {
-            throw new NotImplementedException();
+            return await _repository.Add(title);
         }
     }
 }
