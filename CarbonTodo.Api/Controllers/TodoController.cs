@@ -6,6 +6,7 @@ namespace CarbonTodo.Api.Controllers
 {
     [ApiController]
     [Route("todos")]
+    [Produces("application/json")]
     public class TodoController : ControllerBase
     {
         private readonly ITodoService _service;
