@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonTodo.Domain", "Carbon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonTodo.Infrastructure", "CarbonTodo.Infrastructure\CarbonTodo.Infrastructure.csproj", "{32C76884-3990-4D77-B4AF-0E45E951DFFD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonTodo.Api.Tests", "CarbonTodo.Api.Tests\CarbonTodo.Api.Tests.csproj", "{DCA8E76F-4B71-4B7C-ADCD-7F44EAE577AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonTodo.Domain.Tests", "CarbonTodo.Domain.Tests\CarbonTodo.Domain.Tests.csproj", "{585B39EE-E510-4EA5-8470-BAE4AC55975E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{32C76884-3990-4D77-B4AF-0E45E951DFFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32C76884-3990-4D77-B4AF-0E45E951DFFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32C76884-3990-4D77-B4AF-0E45E951DFFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCA8E76F-4B71-4B7C-ADCD-7F44EAE577AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCA8E76F-4B71-4B7C-ADCD-7F44EAE577AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCA8E76F-4B71-4B7C-ADCD-7F44EAE577AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCA8E76F-4B71-4B7C-ADCD-7F44EAE577AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{585B39EE-E510-4EA5-8470-BAE4AC55975E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{585B39EE-E510-4EA5-8470-BAE4AC55975E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{585B39EE-E510-4EA5-8470-BAE4AC55975E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{585B39EE-E510-4EA5-8470-BAE4AC55975E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
