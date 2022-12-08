@@ -79,7 +79,7 @@ namespace CarbonTodo.Domain.Services
 
         public async Task CompleteAll()
         {
-            throw new NotImplementedException();
+            await _repository.UpdateCompleteAll();
         }
     }
 }

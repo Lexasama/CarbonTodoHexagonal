@@ -190,7 +190,7 @@ namespace CarbonTodo.Domain.Tests.Services
             _mockTodoRepository.Verify(repo => repo.GetByOrder(order));
             _mockTodoRepository.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async Task CompleteAll_should_update_all_todos()
         {

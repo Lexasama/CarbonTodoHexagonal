@@ -81,7 +81,7 @@ namespace CarbonTodo.Api.Tests.Controllers
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
-        
+
 
         [Fact]
         public async Task Return_204NoContent_when_delete_completed()
@@ -211,7 +211,7 @@ namespace CarbonTodo.Api.Tests.Controllers
 
             Assert.Equal(expectedTodoViewModel, updateTodoVM);
         }
-        
+
         [Fact]
         public async Task Mark_all_todos_as_completed_and_return_200Ok()
         {
