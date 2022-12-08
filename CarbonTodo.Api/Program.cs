@@ -7,6 +7,8 @@ using CarbonTodo.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+string spaHost = builder.Configuration["Spa:Host"];
+
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDb") ?? Path.GetTempPath();
 builder.Services.AddContext(connectionString);
 builder.Services.AddTransient<ITodoRepository, TodoRepository>();
@@ -15,8 +17,23 @@ builder.Services.AddControllers(options =>
     options.Filters.Add<AppExceptionFilter>());
 builder.Services.AddValidators();
 
-var app = builder.Build();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
+var app = builder.Build();
+app.UseCors(c =>
+    {
+        c.AllowAnyHeader();
+        c.AllowAnyMethod();
+        c.WithOrigins(spaHost);
+    }
+);
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.MapControllers();
 app.Run();
 
