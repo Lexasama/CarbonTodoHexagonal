@@ -52,5 +52,20 @@ namespace CarbonTodo.Domain.Tests.Services
             _mockTodoRepository.Verify(repo => repo.GetById(1), Times.Once);
             _mockTodoRepository.VerifyNoOtherCalls();
         }
+        
+        [Fact]
+        public async Task Create_returns_created_todo()
+        {
+            const string title = nameof(Create_returns_created_todo);
+            var expectedTodo = new Todo(1, title, false, 1);
+
+            _mockTodoRepository.Setup(repo => repo.Add(It.IsAny<string>()))
+                .ReturnsAsync(expectedTodo).Verifiable();
+
+            var todo = await sut.Create(title);
+            Assert.Equal(expectedTodo, todo);
+            _mockTodoRepository.Verify(repo => repo.Add(title), Times.Once);
+            _mockTodoRepository.VerifyNoOtherCalls();
+        }
     }
 }

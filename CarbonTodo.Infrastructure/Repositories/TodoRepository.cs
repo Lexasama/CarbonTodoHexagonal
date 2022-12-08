@@ -16,7 +16,7 @@ namespace CarbonTodo.Infrastructure.Repositories
 
         public async Task<IEnumerable<Todo>> GetAll()
         {
-            var todos = _dbContext.Todos;
+            var todos = _dbContext.Todos.OrderBy(t => t.Order);
             return ConvertToTodo(todos);
         }
 
@@ -26,7 +26,11 @@ namespace CarbonTodo.Infrastructure.Repositories
 
             return todo is null ? null : ConvertToTodo(todo);
         }
-        
+        public Task<Todo> Add(string title)
+        {
+            throw new NotImplementedException();
+        }
+
         private static Todo ConvertToTodo(TodoData todoData)
         {
             return new Todo(todoData.Id, todoData.Title, todoData.Completed, todoData.Order);

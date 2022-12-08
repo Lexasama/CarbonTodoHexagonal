@@ -6,5 +6,6 @@ namespace CarbonTodo.Domain.Repositories
     {
         Task<IEnumerable<Todo>> GetAll();
         Task<Todo?> GetById(int id);
+        Task<Todo> Add(string title);
     }
 }

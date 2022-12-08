@@ -29,5 +29,10 @@ namespace CarbonTodo.Domain.Services
 
             return todo;
         }
+
+        public Task<Todo> Create(string title)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
