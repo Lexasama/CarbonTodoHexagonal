@@ -34,6 +34,29 @@ namespace CarbonTodo.Api.Controllers
 
             return Ok(TodoViewModel.From(todo, GetUrl(todo.Id)));
         }
+        
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> Delete(bool? completed)
+        {
+            if (completed is null)
+            {
+                await _service.DeleteAll();
+                return NoContent();
+            }
+
+            await _service.DeleteCompleted();
+            return NoContent();
+        }
+
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _service.Delete(id);
+            return NoContent();
+        }
 
         private string GetUrl(int id)
         {

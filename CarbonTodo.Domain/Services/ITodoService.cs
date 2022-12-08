@@ -6,5 +6,8 @@ namespace CarbonTodo.Domain.Services
     {
         Task<List<Todo>> FindAll();
         Task<Todo> FindById(int id);
+        Task Delete(int id);
+        Task DeleteCompleted();
+        Task DeleteAll();
     }
 }

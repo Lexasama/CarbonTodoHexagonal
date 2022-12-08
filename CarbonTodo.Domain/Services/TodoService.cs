@@ -29,5 +29,20 @@ namespace CarbonTodo.Domain.Services
 
             return todo;
         }
+
+        public async Task Delete(int id)
+        {
+            await _repository.DeleteCompleted();
+        }
+
+        public async Task DeleteCompleted()
+        {
+            await _repository.DeleteCompleted();
+        }
+
+        public async Task DeleteAll()
+        {
+            await _repository.DeleteAll();
+        }
     }
 }

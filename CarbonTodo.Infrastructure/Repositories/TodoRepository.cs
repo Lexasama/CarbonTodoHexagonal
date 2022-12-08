@@ -26,7 +26,22 @@ namespace CarbonTodo.Infrastructure.Repositories
 
             return todo is null ? null : ConvertToTodo(todo);
         }
-        
+
+        public async Task DeleteAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task Delete(Todo todo)
+        {
+            throw new NotImplementedException();
+        }
+
         private static Todo ConvertToTodo(TodoData todoData)
         {
             return new Todo(todoData.Id, todoData.Title, todoData.Completed, todoData.Order);
