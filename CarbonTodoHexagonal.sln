@@ -5,6 +5,10 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonTodo.Api", "CarbonTodo.Api\CarbonTodo.Api.csproj", "{95996BE0-EF0E-44BC-80D1-BB0140AC9E93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonTodo.Domain", "CarbonTodo.Domain\CarbonTodo.Domain.csproj", "{61043671-D7CE-4DFA-9E85-C395A437A223}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarbonTodo.Infrastructure", "CarbonTodo.Infrastructure\CarbonTodo.Infrastructure.csproj", "{32C76884-3990-4D77-B4AF-0E45E951DFFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{95996BE0-EF0E-44BC-80D1-BB0140AC9E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95996BE0-EF0E-44BC-80D1-BB0140AC9E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95996BE0-EF0E-44BC-80D1-BB0140AC9E93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61043671-D7CE-4DFA-9E85-C395A437A223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61043671-D7CE-4DFA-9E85-C395A437A223}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61043671-D7CE-4DFA-9E85-C395A437A223}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61043671-D7CE-4DFA-9E85-C395A437A223}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32C76884-3990-4D77-B4AF-0E45E951DFFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32C76884-3990-4D77-B4AF-0E45E951DFFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32C76884-3990-4D77-B4AF-0E45E951DFFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32C76884-3990-4D77-B4AF-0E45E951DFFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
