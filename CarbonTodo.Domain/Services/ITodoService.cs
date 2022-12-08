@@ -17,5 +17,7 @@ namespace CarbonTodo.Domain.Services
         Task DeleteAll();
         
         Task<Todo> Update(int id, bool completed, string title, int order);
+        
+        Task CompleteAll();
     }
 }

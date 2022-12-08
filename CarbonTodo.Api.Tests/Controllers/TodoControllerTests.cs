@@ -211,5 +211,26 @@ namespace CarbonTodo.Api.Tests.Controllers
 
             Assert.Equal(expectedTodoViewModel, updateTodoVM);
         }
+        
+        [Fact]
+        public async Task Mark_all_todos_as_completed_and_return_200Ok()
+        {
+            const string title = nameof(Mark_all_todos_as_completed_and_return_200Ok);
+            var todoData = new TodoData(1, title, false, 1);
+            var initialData = new List<TodoData>
+            {
+                todoData
+            };
+            var client = _factory.CreateClient(initialData);
+
+            var response = await client.PutAsync("/todos/complete-all", JsonContent.Create(new { }));
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var todosVM = await client.GetFromJsonAsync<List<TodoViewModel>>("/todos");
+
+            Assert.All(todosVM, model =>
+                Assert.True(model.Completed));
+        }
     }
 }

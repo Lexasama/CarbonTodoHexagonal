@@ -80,6 +80,14 @@ namespace CarbonTodo.Api.Controllers
 
             return Ok(TodoViewModel.From(todo, GetUrl(id)));
         }
+        
+        [HttpPut("complete-all")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> CompleteAll()
+        {
+            await _service.CompleteAll();
+            return Ok();
+        }
 
         private string GetUrl(int id)
         {

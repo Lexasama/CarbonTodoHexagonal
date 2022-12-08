@@ -19,5 +19,7 @@ namespace CarbonTodo.Domain.Repositories
         Task<Todo> Update(int id, string title, bool completed, int order);
         
         Task<Todo?> GetByOrder(int order);
+        
+        Task UpdateCompleteAll();
     }
 }

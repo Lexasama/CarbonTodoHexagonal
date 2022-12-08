@@ -88,6 +88,11 @@ namespace CarbonTodo.Infrastructure.Repositories
             return todo is null ? null : ConvertToTodo(todo);
         }
 
+        public Task UpdateCompleteAll()
+        {
+            throw new NotImplementedException();
+        }
+
         private static Todo ConvertToTodo(TodoData todoData)
         {
             return new Todo(todoData.Id, todoData.Title, todoData.Completed, todoData.Order);
