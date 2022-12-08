@@ -26,7 +26,7 @@ namespace CarbonTodo.Domain.Tests.Services
             _mockTodoRepository.Verify(repo => repo.GetAll(), Times.Once);
             _mockTodoRepository.VerifyNoOtherCalls();
         }
-        
+
         [Fact]
         public async Task FindById_should_throw_NotFoundException_given_invalid_id()
         {
@@ -65,6 +65,52 @@ namespace CarbonTodo.Domain.Tests.Services
             var todo = await sut.Create(title);
             Assert.Equal(expectedTodo, todo);
             _mockTodoRepository.Verify(repo => repo.Add(title), Times.Once);
+            _mockTodoRepository.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task Delete_throws_NotFoundException_given_non_existing_id()
+        {
+            _mockTodoRepository.Setup(repo => repo.GetById(It.IsAny<int>()))
+                .ReturnsAsync(() => null).Verifiable();
+            await Assert.ThrowsAsync<NotFoundEntityAppException>(async () => await sut.Delete(1));
+
+            _mockTodoRepository.Verify(repo => repo.GetById(1), Times.Once);
+            _mockTodoRepository.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task Delete_one_given_existing_id()
+        {
+            const string title = nameof(Delete_one_given_existing_id);
+            var todoToDelete = new Todo(1, title, false, 1);
+            _mockTodoRepository
+                .Setup(repo => repo.GetById(It.IsAny<int>()))
+                .ReturnsAsync(todoToDelete).Verifiable();
+            _mockTodoRepository.Setup(repo => repo.Delete(It.IsAny<Todo>()));
+
+            await sut.Delete(todoToDelete.Id);
+
+            _mockTodoRepository.Verify(repo => repo.GetById(It.IsAny<int>()), Times.Once);
+            _mockTodoRepository.Verify(repo => repo.Delete(todoToDelete), Times.Once);
+            _mockTodoRepository.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task DeleteAll_deletes_all_todo()
+        {
+            await sut.DeleteAll();
+
+            _mockTodoRepository.Verify(repo => repo.DeleteAll(), Times.Once);
+            _mockTodoRepository.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task DeleteCompleted_should_delete_completed_todos()
+        {
+            await sut.DeleteCompleted();
+
+            _mockTodoRepository.Verify(repo => repo.DeleteCompleted(), Times.Once);
             _mockTodoRepository.VerifyNoOtherCalls();
         }
     }
