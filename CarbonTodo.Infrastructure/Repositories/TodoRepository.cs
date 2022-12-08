@@ -50,6 +50,27 @@ namespace CarbonTodo.Infrastructure.Repositories
         }
 
 
+        public async Task DeleteAll()
+        {
+            _dbContext.Todos.RemoveRange(_dbContext.Todos);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteCompleted()
+        {
+            var completedTodos = _dbContext.Todos.Where(todo => todo.Completed);
+            _dbContext.Todos.RemoveRange(completedTodos);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task Delete(Todo todo)
+        {
+            var todoData = await _dbContext.Todos.FindAsync(todo.Id);
+            _dbContext.Todos.Remove(todoData);
+            await _dbContext.SaveChangesAsync();
+        }
+
+
         public async Task<Todo> Update(int id, string title, bool completed, int order)
         {
             var todoData = await _dbContext.Todos.FindAsync(id);
