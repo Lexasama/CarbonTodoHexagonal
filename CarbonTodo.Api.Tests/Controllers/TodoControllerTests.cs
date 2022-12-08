@@ -6,7 +6,7 @@ using Xunit;
 
 namespace CarbonTodo.Api.Tests.Controllers
 {
-    public class TodoControllerTests: IClassFixture<CustomWebApplicationFactory>
+    public class TodoControllerTests : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly HttpClient _client;
         private readonly CustomWebApplicationFactory _factory;
@@ -16,7 +16,7 @@ namespace CarbonTodo.Api.Tests.Controllers
             _factory = factory;
             _client = factory.CreateClient();
         }
-        
+
         [Fact]
         public async Task Returns_a_list_with_the_right_url()
         {
@@ -42,7 +42,7 @@ namespace CarbonTodo.Api.Tests.Controllers
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
-        
+
         [Fact]
         public async Task Return_200OK_and_todo_given_an_existing_id()
         {
@@ -56,7 +56,7 @@ namespace CarbonTodo.Api.Tests.Controllers
             using var response = await client.GetAsync("/todos/1");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-        
+
         [Fact]
         public async Task Return_201Created_When_creating_a_todo()
         {
@@ -70,7 +70,7 @@ namespace CarbonTodo.Api.Tests.Controllers
             Assert.Equal(new TodoViewModel(1, title, false, 1, "http://localhost/todos/1")
                 , todo);
         }
-        
+
         [Fact]
         public async Task Return_400BadRequest_when_create_given_invalid_model()
         {
@@ -81,7 +81,7 @@ namespace CarbonTodo.Api.Tests.Controllers
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
-        
+
         [Fact]
         public async Task Return_400BadRequest_When_Update_with_invalid_model()
         {
@@ -96,8 +96,7 @@ namespace CarbonTodo.Api.Tests.Controllers
             using var response = await client.PutAsync($"/todos/1", invalidUpdateContent);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
-        
-        
+
         [Fact]
         public async Task Return_409Conflict_when_update_given_conflicting_order()
         {
@@ -115,7 +114,7 @@ namespace CarbonTodo.Api.Tests.Controllers
             using var response = await client.PutAsync($"/todos/{todoData.Id}", updateDto);
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
         }
-        
+
         [Fact]
         public async Task Return_200Ok_and_updated_todo()
         {

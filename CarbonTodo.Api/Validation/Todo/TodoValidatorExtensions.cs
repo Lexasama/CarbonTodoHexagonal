@@ -8,6 +8,7 @@ namespace CarbonTodo.Api.Validation.Todo
         public static void AddTodoValidators(this IServiceCollection services)
         {
             services.AddSingleton<IValidator<CreateDto>, TodoCreateValidator>();
+            services.AddSingleton<IValidator<UpdateDto>, TodoUpdateValidator>();
         }
     }
 }

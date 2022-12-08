@@ -16,7 +16,7 @@ namespace CarbonTodo.Api.Controllers
             _service = todoService;
             _linkGenerator = linkGenerator;
         }
-        
+
         [HttpGet(Name = "GetAll")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<TodoViewModel>>> FindAll()
@@ -24,7 +24,7 @@ namespace CarbonTodo.Api.Controllers
             var todos = await _service.FindAll();
             return Ok(todos.Select(t => TodoViewModel.From(t, GetUrl(t.Id))));
         }
-        
+
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -34,14 +34,19 @@ namespace CarbonTodo.Api.Controllers
 
             return Ok(TodoViewModel.From(todo, GetUrl(todo.Id)));
         }
-        
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create([FromBody] CreateDto dto)
         {
-            
             var todo = await _service.Create(dto.Title);
-        
+
+            string url = GetUrl(todo.Id);
+
+            TodoViewModel result = TodoViewModel.From(todo, url);
+            return Created(result.Url, result);
+        }
+
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -49,12 +54,6 @@ namespace CarbonTodo.Api.Controllers
         public async Task<IActionResult> Update(int id, [FromBody] UpdateDto dto)
         {
             var todo = await _service.Update(id, dto.Completed, dto.Title, dto.Order);
-
-            string url = GetUrl(todo.Id);
-
-            TodoViewModel result = TodoViewModel.From(todo, url);
-            return Created(result.Url, result);
-        }
 
             return Ok(TodoViewModel.From(todo, GetUrl(id)));
         }

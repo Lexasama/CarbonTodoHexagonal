@@ -7,11 +7,7 @@ namespace CarbonTodo.Api.Validation
     {
         public static void AddValidators(this IServiceCollection services)
         {
-            services.AddFluentValidationAutoValidation(config =>
-            {
-                config.DisableDataAnnotationsValidation = true; 
-            
-            });
+            services.AddFluentValidationAutoValidation(config => { config.DisableDataAnnotationsValidation = true; });
             services.AddTodoValidators();
         }
     }

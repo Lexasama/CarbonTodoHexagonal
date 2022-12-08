@@ -17,6 +17,12 @@ namespace CarbonTodo.Api.ActionFilters
                 context.Result = new NotFoundResult();
                 context.ExceptionHandled = true;
             }
+
+            if (context.Exception is ConflictingOrderAppException)
+            {
+                context.Result = new ConflictResult();
+                context.ExceptionHandled = true;
+            }
         }
     }
 }

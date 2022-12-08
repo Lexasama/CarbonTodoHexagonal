@@ -35,9 +35,30 @@ namespace CarbonTodo.Domain.Services
             return await _repository.Add(title);
         }
 
-        public Task<Todo> Update(int id, bool completed, string title, int order)
+        public async Task<Todo> Update(int id, bool completed, string title, int order)
         {
-            throw new NotImplementedException();
+            var todo = await FindById(id);
+
+            var todoOrder = await FindByOrder(order);
+
+            if (todoOrder.Id != id)
+            {
+                throw new ConflictingOrderAppException(order);
+            }
+
+            return await _repository.Update(todo.Id, title, completed, order);
+        }
+
+        public async Task<Todo> FindByOrder(int order)
+        {
+            var todo = await _repository.GetByOrder(order);
+
+            if (todo is null)
+            {
+                throw new NotFoundEntityAppException();
+            }
+
+            return todo;
         }
     }
 }

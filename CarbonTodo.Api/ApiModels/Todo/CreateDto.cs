@@ -6,6 +6,7 @@
         {
             Title = title;
         }
+
         public string Title { get; }
     }
 }
