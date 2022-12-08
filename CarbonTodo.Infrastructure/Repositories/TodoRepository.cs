@@ -88,6 +88,16 @@ namespace CarbonTodo.Infrastructure.Repositories
             return todo is null ? null : ConvertToTodo(todo);
         }
 
+        public async Task UpdateCompleteAll()
+        {
+            foreach (var todo in _dbContext.Todos)
+            {
+                todo.Completed = true;
+            }
+
+            await _dbContext.SaveChangesAsync();
+        }
+
         private static Todo ConvertToTodo(TodoData todoData)
         {
             return new Todo(todoData.Id, todoData.Title, todoData.Completed, todoData.Order);

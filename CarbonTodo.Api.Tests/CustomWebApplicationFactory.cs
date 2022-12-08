@@ -1,4 +1,5 @@
 ﻿using CarbonTodo.Api.ActionFilters;
+using CarbonTodo.Api.Validation;
 using CarbonTodo.Infrastructure.Context;
 using CarbonTodo.Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -23,6 +24,7 @@ namespace CarbonTodo.Api.Tests
                     options.UseInMemoryDatabase("Test", new InMemoryDatabaseRoot())
                 );
                 services.AddControllers(options => options.Filters.Add<AppExceptionFilter>());
+                services.AddValidators();
             });
             return base.CreateHost(builder);
         }
@@ -39,6 +41,7 @@ namespace CarbonTodo.Api.Tests
                         services.AddDbContext<ApplicationDbContext>(options =>
                             options.UseInMemoryDatabase("Test_with_data", root));
                         services.AddControllers(options => options.Filters.Add<AppExceptionFilter>());
+                        services.AddValidators();
 
                         var sp = services.BuildServiceProvider();
                         using var scope = sp.CreateScope();

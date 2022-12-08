@@ -76,5 +76,10 @@ namespace CarbonTodo.Domain.Services
 
             return todo;
         }
+
+        public async Task CompleteAll()
+        {
+            await _repository.UpdateCompleteAll();
+        }
     }
 }
