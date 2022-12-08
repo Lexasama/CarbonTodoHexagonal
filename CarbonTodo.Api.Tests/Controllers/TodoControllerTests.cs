@@ -4,7 +4,7 @@ using CarbonTodo.Api.ApiModels.Todo;
 using CarbonTodo.Infrastructure.Entities;
 using Xunit;
 
-namespace CarbonTodo.Api.Tests
+namespace CarbonTodo.Api.Tests.Controllers
 {
     public class TodoControllerTests: IClassFixture<CustomWebApplicationFactory>
     {
