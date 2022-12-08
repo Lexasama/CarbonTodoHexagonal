@@ -34,12 +34,11 @@ namespace CarbonTodo.Api.Controllers
 
             return Ok(TodoViewModel.From(todo, GetUrl(todo.Id)));
         }
-        
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create([FromBody] CreateDto dto)
         {
-            
             var todo = await _service.Create(dto.Title);
 
             string url = GetUrl(todo.Id);
@@ -69,6 +68,17 @@ namespace CarbonTodo.Api.Controllers
         {
             await _service.Delete(id);
             return NoContent();
+        }
+
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateDto dto)
+        {
+            var todo = await _service.Update(id, dto.Completed, dto.Title, dto.Order);
+
+            return Ok(TodoViewModel.From(todo, GetUrl(id)));
         }
 
         private string GetUrl(int id)

@@ -2,6 +2,7 @@
 using CarbonTodo.Domain.Repositories;
 using CarbonTodo.Infrastructure.Context;
 using CarbonTodo.Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarbonTodo.Infrastructure.Repositories
 {
@@ -37,7 +38,7 @@ namespace CarbonTodo.Infrastructure.Repositories
 
             return ConvertToTodo(todo.Entity);
         }
-        
+
         private int GenerateOrder()
         {
             return GetMaxOrder() + 1;
@@ -67,6 +68,24 @@ namespace CarbonTodo.Infrastructure.Repositories
             var todoData = await _dbContext.Todos.FindAsync(todo.Id);
             _dbContext.Todos.Remove(todoData);
             await _dbContext.SaveChangesAsync();
+        }
+
+
+        public async Task<Todo> Update(int id, string title, bool completed, int order)
+        {
+            var todoData = await _dbContext.Todos.FindAsync(id);
+            todoData.Title = title;
+            todoData.Completed = completed;
+            todoData.Order = order;
+            var result = _dbContext.Todos.Update(todoData);
+            await _dbContext.SaveChangesAsync();
+            return ConvertToTodo(result.Entity);
+        }
+
+        public async Task<Todo?> GetByOrder(int order)
+        {
+            var todo = await _dbContext.Todos.FirstOrDefaultAsync(t => t.Order == order);
+            return todo is null ? null : ConvertToTodo(todo);
         }
 
         private static Todo ConvertToTodo(TodoData todoData)

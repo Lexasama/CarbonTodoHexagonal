@@ -56,7 +56,7 @@ namespace CarbonTodo.Api.Tests.Controllers
             using var response = await client.GetAsync("/todos/1");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
-        
+
         [Fact]
         public async Task Return_201Created_When_creating_a_todo()
         {
@@ -70,7 +70,7 @@ namespace CarbonTodo.Api.Tests.Controllers
             Assert.Equal(new TodoViewModel(1, title, false, 1, "http://localhost/todos/1")
                 , todo);
         }
-        
+
         [Fact]
         public async Task Return_400BadRequest_when_create_given_invalid_model()
         {
@@ -149,6 +149,67 @@ namespace CarbonTodo.Api.Tests.Controllers
             var todosViewModel = await client.GetFromJsonAsync<List<TodoViewModel>>("/todos");
 
             Assert.Empty(todosViewModel);
+        }
+
+        [Fact]
+        public async Task Return_400BadRequest_When_Update_with_invalid_model()
+        {
+            const string title = nameof(Return_400BadRequest_When_Update_with_invalid_model);
+            var todoData = new TodoData(1, title, false, 1);
+            var initialData = new List<TodoData>
+            {
+                todoData
+            };
+            using var client = _factory.CreateClient(initialData);
+            var invalidUpdateContent = JsonContent.Create(new { title = "title" });
+            using var response = await client.PutAsync($"/todos/1", invalidUpdateContent);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Return_409Conflict_when_update_given_conflicting_order()
+        {
+            const string title = nameof(Return_409Conflict_when_update_given_conflicting_order);
+            var todoData = new TodoData(1, title, false, 1);
+            const int conflictingOrder = 2;
+            var data = new List<TodoData>
+            {
+                todoData,
+                new(2, "other title", false, conflictingOrder)
+            };
+
+            using var client = _factory.CreateClient(data);
+            var updateDto = JsonContent.Create(new UpdateDto("new title", true, conflictingOrder));
+            using var response = await client.PutAsync($"/todos/{todoData.Id}", updateDto);
+            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Return_200Ok_and_updated_todo()
+        {
+            const string title = nameof(Return_200Ok_and_updated_todo);
+            var todoData = new TodoData(1, title, false, 1);
+            var initialData = new List<TodoData>
+            {
+                todoData
+            };
+
+            var client = _factory.CreateClient(initialData);
+
+            const string newTitle = "new title";
+            var updateDto = JsonContent.Create(new UpdateDto("new title", todoData.Completed, todoData.Order));
+
+            var response = await client.PutAsync($"/todos/{todoData.Id}", updateDto);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var updateTodoVM = await response.Content.ReadFromJsonAsync<TodoViewModel>();
+
+            var expectedUrl = $"http://localhost/todos/{todoData.Id}";
+            var expectedTodoViewModel =
+                new TodoViewModel(todoData.Id, newTitle, todoData.Completed, todoData.Order, expectedUrl);
+
+            Assert.Equal(expectedTodoViewModel, updateTodoVM);
         }
     }
 }
