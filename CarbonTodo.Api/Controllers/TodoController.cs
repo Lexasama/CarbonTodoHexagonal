@@ -1,0 +1,43 @@
+﻿using CarbonTodo.Api.ApiModels.Todo;
+using CarbonTodo.Domain.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CarbonTodo.Api.Controllers
+{
+    [ApiController]
+    [Route("todos")]
+    public class TodoController : ControllerBase
+    {
+        private readonly ITodoService _service;
+        private readonly LinkGenerator _linkGenerator;
+
+        public TodoController(ITodoService todoService, LinkGenerator linkGenerator)
+        {
+            _service = todoService;
+            _linkGenerator = linkGenerator;
+        }
+        
+        [HttpGet(Name = "GetAll")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<TodoViewModel>>> FindAll()
+        {
+            var todos = await _service.FindAll();
+            return Ok(todos.Select(t => TodoViewModel.From(t, GetUrl(t.Id))));
+        }
+        
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<TodoViewModel>> FindOne(int id)
+        {
+            var todo = await _service.FindById(id);
+
+            return Ok(TodoViewModel.From(todo, GetUrl(todo.Id)));
+        }
+
+        private string GetUrl(int id)
+        {
+            return _linkGenerator.GetUriByAction(HttpContext, nameof(FindOne), "Todo", new { id })!;
+        }
+    }
+}
