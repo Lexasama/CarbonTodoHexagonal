@@ -84,9 +84,9 @@ namespace CarbonTodo.Api.Controllers
 
         [HttpPut("complete-all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> CompleteAll()
+        public async Task<IActionResult> CompleteAll(bool completed = true)
         {
-            await _service.CompleteAll();
+            await _service.UpdateCompleted(completed);
             return Ok();
         }
 

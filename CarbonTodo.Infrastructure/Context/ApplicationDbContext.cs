@@ -1,19 +1,18 @@
 ﻿using CarbonTodo.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CarbonTodo.Infrastructure.Context
+namespace CarbonTodo.Infrastructure.Context;
+
+public class ApplicationDbContext : DbContext
 {
-    public class ApplicationDbContext : DbContext
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-        }
+    }
 
-        public DbSet<TodoData> Todos { get; set; }
+    public DbSet<TodoData> Todos { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.AddTodos();
-        }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.AddTodos();
     }
 }

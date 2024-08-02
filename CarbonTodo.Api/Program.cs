@@ -1,4 +1,5 @@
 using CarbonTodo.Api.ActionFilters;
+using CarbonTodo.Api.Extensions;
 using CarbonTodo.Api.Validation;
 using CarbonTodo.Domain.Repositories;
 using CarbonTodo.Domain.Services;
@@ -9,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 string spaHost = builder.Configuration["Spa:Host"];
 
-var connectionString = builder.Configuration.GetConnectionString("ApplicationDb") ?? Path.GetTempPath();
+var connectionString = builder.Configuration.GetConnectionString("ApplicationDb");
 builder.Services.AddContext(connectionString);
 builder.Services.AddTransient<ITodoRepository, TodoRepository>();
 builder.Services.AddTransient<ITodoService, TodoService>();
@@ -32,8 +33,18 @@ app.UseCors(c =>
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+        {
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApi");
+            options.RoutePrefix = string.Empty;
+        }
+    );
+    app.ApplyMigrations();
 }
+
+
+app.UseHttpsRedirection();
+
 app.MapControllers();
 app.Run();
 

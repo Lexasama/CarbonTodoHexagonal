@@ -81,5 +81,10 @@ namespace CarbonTodo.Domain.Services
         {
             await _repository.UpdateCompleteAll();
         }
+
+        public async Task UpdateCompleted(bool completed)
+        {
+            await _repository.UpdateComplete(completed);
+        }
     }
 }

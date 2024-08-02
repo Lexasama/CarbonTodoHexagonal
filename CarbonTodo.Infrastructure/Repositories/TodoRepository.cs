@@ -90,9 +90,14 @@ namespace CarbonTodo.Infrastructure.Repositories
 
         public async Task UpdateCompleteAll()
         {
+            await UpdateComplete(true);
+        }
+
+        public async Task UpdateComplete(Boolean completed)
+        {
             foreach (var todo in _dbContext.Todos)
             {
-                todo.Completed = true;
+                todo.Completed = completed;
             }
 
             await _dbContext.SaveChangesAsync();

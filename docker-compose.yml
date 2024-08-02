@@ -1,0 +1,19 @@
+services:
+  todo.api:
+    container_name: todo.api
+    image: carbontodoapi
+    build:
+      context: .
+      dockerfile: CarbonTodo.Api/Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - todo.database
+  todo.database:
+    container_name: todo.database
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=database101214@
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
